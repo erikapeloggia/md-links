@@ -1,10 +1,13 @@
-//chamar FilSystem
+//chamar FileSystem
 const fs = require('fs');
 
 //função para extrair os links dos arquivos .md 
 function extractLinks(path, options) {
 // ler o conteúdo
   return fs.promises.readFile(path, 'utf8').then ((fileContent) => {
+    if (!fileContent) {
+      throw new Error('Empty file.');
+    }
     // Regex para identificar links
     const pattern = /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g;
     // Cria um array com MatchAll para pegar todas as correspodências de links no arquivo 
@@ -33,7 +36,7 @@ function extractLinks(path, options) {
       }
     }
     return objLinks;
-  }) 
+  })
 };
 
 // função para validar os links do arquivo .md
