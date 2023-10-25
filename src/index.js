@@ -1,12 +1,16 @@
 //chamar FileSystem
 const fs = require('fs');
+const pathway = require('path');
 
 //função para extrair os links dos arquivos .md 
-function extractLinks(path, options) {
+function mdLinks(path, options) {
+  const absolutePath = pathway.resolve(path);
 // ler o conteúdo
   return fs.promises.readFile(path, 'utf8').then ((fileContent) => {
-    if (!fileContent) {
-      throw new Error('Empty file.');
+    if (pathway.extname(absolutePath).toLowerCase() !== '.md') {
+      throw new Error('Incompatible file: not a Markdown file');
+    } else if (!fileContent) {
+      throw new Error('Unable to read the file because it is empty');
     }
     // Regex para identificar links
     const pattern = /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g;
@@ -20,6 +24,9 @@ function extractLinks(path, options) {
       file: path,
     })
     )
+    if (objLinks.length === 0) {
+      throw new Error('No links found in this file');
+    }
     // Cria uma condição para saber a escolha do usuário
     if (options.validate || options.stats){
       // cria um novo array a partir da validação dos links
@@ -30,34 +37,44 @@ function extractLinks(path, options) {
       if (options.validate && !options.stats){
         return Promise.all(validations);
       // roda a função de estatísticas dos links  
-      } if (options.stats){
+      } else {
        return Promise.all(validations).then((validateArray)=>
         statsLinks(validateArray, options));
       }
     }
     return objLinks;
-  })
+  }).catch((error) => {
+    if (error.code === 'ENOENT') {
+      throw new Error('Invalid Command');
+    } 
+    throw error;
+  });
 };
 
-// função para validar os links do arquivo .md
+// Função para validar os links do arquivo .md
 function validateLinks(link) {
-  // a função fetch é chamada com a URL do link
+  // A função fetch é chamada com a URL do link
   return fetch(link.url)
-    .then(response => {
-      //verifica se a propriedade 'ok' da resposta é 'true'
+    .then((response) => {
       if (response.ok) {
+        // Se a resposta for bem-sucedida (status 200), o link é válido
         link.valid = true;
         link.status = response.status;
       } else {
+        // Se a resposta não for bem-sucedida (status diferente de 200),
+        // o link é considerado inválido, e uma exceção é lançada
         link.valid = false;
         link.status = response.status;
+        throw new Error('HTTP status ' + response.status);
       }
       return link;
     })
-    //Define como false indicando que o link não é válido devido a um erro
-    .catch(error => {
+    .catch((error) => {
+      // Se ocorrer algum erro durante a requisição (como erro de rede),
+      // o link é considerado inválido, e o erro é capturado e armazenado
+      // no campo 'error' do objeto link
       link.valid = false;
-      link.error = error.message;
+      link.error = error.message; // Captura a mensagem de erro
       return link;
     });
 }
@@ -78,4 +95,4 @@ function statsLinks(links) {
 }
 
 //export das funções para o CLI
-module.exports = { extractLinks, validateLinks, statsLinks };
+module.exports = { mdLinks, validateLinks, statsLinks };
