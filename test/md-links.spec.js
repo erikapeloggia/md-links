@@ -1,63 +1,63 @@
 const {mdLinks, validateLinks, statsLinks } = require('../src/index.js');
 describe('function mdLinks', () => {
   it('should extract links from Markdown (.md) file', () => {
-    const filePath = './src/files/links.md';
+    const path = './src/files/links.md';
     const options = {};
-    return mdLinks(filePath, options).then((result) => {
+    return mdLinks(path, options).then((result) => {
       expect(result).toEqual([
         {
           text: 'FileSystem',
           url: 'https://nodejs.org/dist/latest-v6.x/docs/api/fs.html#fs_file_system',
-          file: filePath,
+          file: path,
         },
         {
           text: 'REGEX',
           url: 'https://blog.dp6.com.br/regex-o-guia-essencial-das-express%C3%B5es-regulares-2fc1df38a481',
-          file: filePath,
+          file: path,
         },
         {
           text: 'REGEX',
           url: 'https://blog.dp6.com.br/regex-o-guia-essencial-das-express%C3%B5es-regulares-2fc1df38a481',
-          file: filePath,
+          file: path,
         },
         {
           text: 'Git Hub 404',
           url: 'https://github.com/PalomitaLinda',
-          file: filePath,
+          file: path,
         },
         {
           text: 'Divine Oracle',
           url: 'https://erikapeloggia.github.io/divine-oracle/divineoracle',
-          file: filePath,
+          file: path,
         }
       ]);
     });
   });
 
-  it('sholud return a error if the file/directory doesnt exist', () => {
-    const fakeFile = 'arquivoinexistente.md';
-    return expect(mdLinks(fakeFile)).rejects.toThrow('file/directory not found');
+  it('should return an error if the command is entered incorrectly', () => {
+    const incorrectlyCommand = 'file';
+    return expect(mdLinks(incorrectlyCommand)).rejects.toThrow('Invalid Command');
   });
 
-  it('should return a error if the file its diferent from a .md', () => {
-    const fakeMdFile = './src/files/test.txt';
-    return expect(mdLinks(fakeMdFile)).rejects.toThrow('Incompatible file: not a Markdown file');
+  it('should return an error if the file is diferent from a .md file', () => {
+    const txtFile = './src/files/test.txt';
+    return expect(mdLinks(txtFile)).rejects.toThrow('Incompatible file: not a Markdown file');
   });
 
-  it('should return a error if the file is empty', () => {
+  it('should return an error if the file is empty', () => {
     const emptyFile = './src/files/empty.md';
     return expect(mdLinks(emptyFile)).rejects.toThrow('Unable to read the file because it is empty');
   });
 
   it('should return a message of no links', () => {
-    const filePath = './src/files/noLinks.md';
-    return expect(mdLinks(filePath)).rejects.toThrow('No links found in this file');
+    const path = './src/files/noLinks.md';
+    return expect(mdLinks(path)).rejects.toThrow('No links found in this file');
   });
 
   it('should return all link validations if the validation option is enabled', () => {
-    const filePath = './src/files/links.md';
+    const path = './src/files/links.md';
     const options = { validate: true, stats: false };
-    return mdLinks(filePath, options).then((result) => {
+    return mdLinks(path, options).then((result) => {
       expect(result).toStrictEqual([
          {
            "file": "./src/files/links.md",
@@ -100,18 +100,18 @@ describe('function mdLinks', () => {
     });
   });
 
-  it('should return links validations and statistics if the options is enabled', () => {
-    const filePath = './src/files/links.md';
+  it('should return link validations and statistics if the options is enabled', () => {
+    const path = './src/files/links.md';
     const options = { validate: true, stats: true };
-    return mdLinks(filePath, options).then((result) => {
+    return mdLinks(path, options).then((result) => {
       expect(result).toStrictEqual({"total": 5, "unique": 4, "broken": 2})
     });
   });
 
-  it('should return links statistics if the statistics option is enabled', () => {
-    const filePath = './src/files/links.md';
+  it('should return link statistics if the statistics option is enabled', () => {
+    const path = './src/files/links.md';
     const options = { validate: false, stats: true };
-    return mdLinks(filePath, options).then((result) => {
+    return mdLinks(path, options).then((result) => {
       expect(result).toStrictEqual({"total": 5, "unique": 4, "broken": 2})
     });
 });
@@ -177,28 +177,28 @@ describe('statsLinks', () => {
   it('should calculate the statistics correctly', () => {
     const links = [
       {
-        text: 'Markdown',
-        url: 'https://pt.wikipedia.org/wiki/Markdown',
-        file: './files/test.md',
+        text: 'FileSystem',
+        url: 'https://nodejs.org/dist/latest-v6.x/docs/api/fs.html#fs_file_system',
+        file: './src/files/links.md',
         status: 200,
       },
       {
-        text: 'Node.js',
-        url: 'https://nodejs.org/',
-        file: './files/test.md',
+        text: 'REGEX',
+        url: 'https://blog.dp6.com.br/regex-o-guia-essencial-das-express%C3%B5es-regulares-2fc1df38a481',
+        file: './src/files/links.md',
         status: 200,
       },
       {
-        text: 'Laboratoria',
-        url: 'https://www.laboratoria.la/ana',
-        file: './files/test.md',
-        status: 400,
+        text: 'REGEX',
+        url: 'https://blog.dp6.com.br/regex-o-guia-essencial-das-express%C3%B5es-regulares-2fc1df38a481',
+        file: './src/files/links.md',
+        status: 200,
       },
       {
-        text: 'Node.js',
-        url: 'https://nodejs.org/',
-        file: './files/test.md',
-        status: 200,
+        text: 'GitHub 404',
+        url: 'https://github.com/PalomitaLinda',
+        file: './src/files/links.md',
+        status: 404,
       },
     ];
     const expectedResult = {
