@@ -40,41 +40,44 @@ Como este projeto é testado por meio do terminal, desenvolvi um fluxograma para
 ## 4. Guia de instalação e uso
 
 ### 4.1. Instalação 
-Para instalação da biblioteca execute o comando através do terminal:
+* **Para instalação da biblioteca execute o comando através do terminal:**
 ```
 npm install md-links-erika-peloggia
 ```  
 
-### 4.2. Guia de uso
+### 4.2. Uso
+
+**Extração de links:**
 * Para leitura e extração dos links de um arquivo .md, execute:
 ```
 md-links <caminho-do-arquivo>
 ```
-<img src='./src/assets/md-links_extractLinks.png' alt="md-links">  
+<p><img src='./src/assets/md-links_extractLinks.png' alt="md-links"></p>
 
-
+**Validação dos links:**
 * Para validar links de um arquivo Markdown, execute:
 ```
 md-links <caminho-do-arquivo> --validate
 ```
-<img src='./src/assets/md-links_validate.png' alt="md-links --validate">  
+<p><img src='./src/assets/md-links_validate.png' alt="md-links --validate"></p>
 
-
+**Dados estatísticos dos links:**
 * Para gerar dados estatísticos dos links contidos no arquivo .md, execute:
 ```
 md-links <caminho-do-arquivo> --stats
 ```
-<img src='./src/assets/md-links_stats.png' alt="md-links --stats">  
+<p><img src='./src/assets/md-links_stats.png' alt="md-links --stats"></p>
 
-
+**Validação e estatísticas dos links:** 
 * Para validar links e gerar estatísticas de um arquivo Markdown, execute:
 ```
 md-links <caminho-do-arquivo> --validate --stats
 ```
-<img src='./src/assets/md-links_validate_stats.png' alt="md-links --validate --stats">  
+<p><img src='./src/assets/md-links_validate_stats.png' alt="md-links --validate --stats"></p>
 
 
-* Mensagens de erro
+**Mensagens de erro**
+
 Dependendo do comando que o usuário executar no terminal, as seguintes mensagens de erro podem ser geradas:
   * erro para arquivo vazio
   * erro para um arquivo .md sem links
@@ -115,7 +118,7 @@ Foram testadas as funções de ``` mdLinks ``` com testes das mensagens de erro,
 
 <a href="https://github.com/"><img alt="GitHub Icon" height="45" src="https://cdn.icon-icons.com/icons2/2368/PNG/512/github_logo_icon_143772.png"/></a>
 <a href="https://git-scm.com/"><img alt="Git Bash Icon" height="45" src="https://cdn.icon-icons.com/icons2/2107/PNG/512/file_type_git_icon_130581.png"/></a>
-<a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/"><img alt="JavaScript Icon" height="40" src="https://cdn.icon-icons.com/icons2/2108/PNG/512/javascript_icon_130900.png">
+<a href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/"><img alt="JavaScript Icon" height="40" src="https://cdn.icon-icons.com/icons2/2108/PNG/512/javascript_icon_130900.png"></a>
 <a href="https://nodejs.org/"><img alt="Node.js Icon" height="45" src="https://cdn.icon-icons.com/icons2/2415/PNG/512/nodejs_plain_logo_icon_146409.png"/></a>
 <a href="https://www.npmjs.com/"><img alt="Npm Icon" height="45" src="https://cdn.icon-icons.com/icons2/2407/PNG/512/npm_icon_146141.png"/></a>
 <a href="https://www.figma.com/"><img alt="Figma Icon" height="45" src="https://cdn.icon-icons.com/icons2/2429/PNG/512/figma_logo_icon_147289.png"/></a>
